@@ -1,0 +1,6 @@
+# SGPT (tbckr/sgpt) via Docker
+[ -f "$HOME/.config/bash/secrets" ] && source "$HOME/.config/bash/secrets"
+
+sgpt() {
+  docker run --rm -e OPENAI_API_BASE="${OPENAI_API_BASE}" -e OPENAI_API_KEY="${OPENROUTER_API_KEY}" -v "$HOME/.config/sgpt:/home/nonroot/.config/sgpt" ghcr.io/tbckr/sgpt:latest "$@"
+}

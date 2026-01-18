@@ -1,0 +1,113 @@
+@import "../omarchy/current/theme/waybar.css";
+
+* {
+  background-color: @background;
+  color: @foreground;
+
+  border: none;
+  border-radius: 0;
+  min-height: 0;
+  font-family: 'JetBrainsMono Nerd Font';
+  font-size: 14px;
+}
+
+.modules-left {
+  margin-left: 8px;
+}
+
+.modules-right {
+  margin-right: 8px;
+}
+
+#workspaces button {
+  all: initial;
+  padding: 0 6px;
+  margin: 0 1.5px;
+  min-width: 9px;
+}
+
+#workspaces button.empty {
+  opacity: 0.5;
+}
+
+#custom-omarchy,
+#custom-screenrecording-indicator,
+#custom-update {
+  min-width: 12px;
+  margin: 0 8px;
+}
+
+#cpu,
+#tray,
+#bluetooth,
+#network,
+#custom-expand-icon,
+#custom-volume,
+#custom-nightlight {
+  margin-right: 8px;
+  font-weight: bold;
+}
+
+#bluetooth,
+#network {
+  color: #4298ed;
+}
+
+tooltip {
+  padding: 2px;
+  border: 1px solid @foreground;
+}
+
+#custom-update {
+  font-size: 10px;
+}
+
+#clock {
+  margin-left: 8px;
+}
+
+.hidden {
+  opacity: 0;
+}
+
+#custom-screenrecording-indicator {
+  min-width: 12px;
+  margin-left: 5px;
+  font-size: 10px;
+  padding-bottom: 1px;
+}
+
+#custom-screenrecording-indicator.active {
+  color: #a55555;
+}
+
+#custom-voxtype {
+  min-width: 12px;
+  margin: 0 0 0 7.5px;
+}
+
+#custom-voxtype.recording {
+  color: #a55555;
+}
+
+#custom-weather {
+  margin: 0 7.5px;
+  margin-left: 10px;
+  font-weight: bold;
+}
+
+#custom-spotify {
+  margin: 0 7.5px;
+  margin-left: 10px;
+  font-weight: bold;
+}
+
+/* Quando está tocando (O script Python define essa classe) */
+#custom-spotify.playing {
+  color: @foreground;
+}
+
+/* Quando está 404 (O script Python define essa classe) */
+#custom-spotify.stopped {
+  color: #a6adc8; /* Uma cor mais apagada/cinza para indicar inatividade */
+}
