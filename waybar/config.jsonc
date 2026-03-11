@@ -44,6 +44,11 @@
       "3": [],
       "4": [],
       "5": [],
+      "6": [],
+      "7": [],
+      "8": [],
+      "9": [],
+      "10": [],
     },
   },
   "custom/omarchy": {
@@ -74,7 +79,7 @@
     "format": "{:L%A %H:%M}",
     "format-alt": "{:L%d %B W%V %Y}",
     "tooltip": false,
-    "on-click-right": "omarchy-launch-floating-terminal-with-presentation omarchy-tz-select",
+    "on-click-right": "omarchy-launch-floating-terminal-with-presentation omarchy-tz-sielect",
   },
   "custom/weather": {
     "format": "{}",

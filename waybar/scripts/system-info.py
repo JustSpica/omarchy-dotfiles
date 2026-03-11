@@ -4,17 +4,19 @@ import subprocess
 import json
 import re
 
+# Configurações Visuais
 FILLED = "▮"
 EMPTY = "▯"
 BAR_LENGTH = 10
 
-MIN_K = 4000
-MAX_K = 6000
-STEP = 200
+# Limites (Kelvin)
+MIN_K = 4000  # Quente (4000K)
+MAX_K = 6000  # Padrão (6000K)
+STEP = 200    # Passo do scroll
 
 def get_progress_bar(percent):
     filled_len = int(round(percent * BAR_LENGTH / 100))
-    
+    # Garante limites
     filled_len = max(0, min(filled_len, BAR_LENGTH))
     empty_len = BAR_LENGTH - filled_len
     return (FILLED * filled_len) + (EMPTY * empty_len)
@@ -23,12 +25,13 @@ def get_current_k():
     try:
         output = subprocess.check_output(["hyprctl", "hyprsunset", "temperature"], text=True, stderr=subprocess.DEVNULL).strip()
 
+        # Procura o primeiro número na resposta
         match = re.search(r'\d+', output)
         if match:
             return int(match.group(0))
-        return MAX_K 
+        return MAX_K # Se não achar número, assume padrão (Off)
     except:
-        return MAX_K
+        return MAX_K # Se der erro no comando, assume padrão
 
 def change_temperature(direction):
     current = get_current_k()
@@ -38,17 +41,21 @@ def change_temperature(direction):
     else:
         new_k = current + STEP
     
+    # Aplica Limites (Clamp)
     new_k = max(MIN_K, min(new_k, MAX_K))
     
+    # Envia para o Hyprland
     subprocess.run(["hyprctl", "hyprsunset", "temperature", str(new_k)], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
     
     print(json.dumps({}))
 
 def get_volume():
     try:
+        # Pega volume via pamixer
         vol_output = subprocess.check_output(["pamixer", "--get-volume"], text=True).strip()
         percent = int(vol_output)
         
+        # Pega o status de mudo (lê o texto 'true' ou 'false')
         mute_output = subprocess.check_output(["pamixer", "--get-mute"], text=True).strip()
         is_muted = mute_output == "true"
 
@@ -59,6 +66,7 @@ def get_volume():
         else:
             icon = ""
                 
+        # Cor Amarela para Volume
         return {
             "text": f"<span color='#f9e2af'>{icon} {bar}</span>",
             "tooltip": f"Volume: {percent}% {'(Silenciado)' if is_muted else ''}"
@@ -72,6 +80,7 @@ def get_temperature():
     is_active = current_k < MAX_K
 
     if is_active:
+        # Calcula porcentagem inversa (6500=0%, 2000=100%)
         range_k = MAX_K - MIN_K
         diff = MAX_K - current_k
         percent = int((diff / range_k) * 100)
