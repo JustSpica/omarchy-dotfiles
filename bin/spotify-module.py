@@ -50,15 +50,13 @@ def main():
             escaped_artist = artist.replace("&", "&amp;")
             escaped_title = title.replace("&", "&amp;")
 
-            wave_icon = "" 
-
             tooltip_lines = [
                 f"{escaped_artist} - {escaped_title}",
-                f"<b>{wave_icon}  </b> <span color='#a6adc8'>{time_now}  {progress_bar}  {time_total}</span>"
+                f"<span color='#a6adc8'>{time_now}  {progress_bar}  {time_total}</span>"
             ]
 
             print(json.dumps({
-                "text": f"<span color='#1db954'>  {track_text}</span>",
+                "text": f"<span color='#1db954'>[   {track_text} ]</span>",
                 "class": "playing",
                 "tooltip": "\n".join(tooltip_lines)
             }))
@@ -68,7 +66,7 @@ def main():
 
     except Exception:
         print(json.dumps({
-            "text": "<span color='#e5c07b'>  404 - Not Found</span>",
+            "text": "<span color='#e5c07b'>[   404 - Not Found ]</span>",
             "class": "stopped",
             "tooltip": "Spotify desconectado ou pausado."
         }))
