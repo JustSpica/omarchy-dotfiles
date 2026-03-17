@@ -1,20 +1,19 @@
-# Omarchy 3.0 Dotfiles Repository
+# Omarchy 3.x.x iles
 
-This repository stores the configuration files and helper scripts I use to complement **Omarchy 3.0**, my customized Linux desktop environment. The layout mirrors the logical components of the stack – window manager, terminal, PDF viewer, status bar, and AI‑assistant integration – making it easy for a new agent (or a human) to understand where each piece lives and how to apply it.
+This repository stores the configuration files and helper scripts I use with **Omarchy 3.x.x**. The structure is organized by component (Hyprland, Waybar, shell, utilities) so it is easier to maintain and reuse.
 
 ---
 
 ## Directory Overview
 
-| Directory  | Purpose                                                                                        | Key Files                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         |
-| ---------- | ---------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `bash/`    | Personal Bash utilities, environment variables and secret placeholders.                        | `functions/` – reusable shell functions; `secrets/` – files that are **git‑ignored** and hold private tokens or passwords.                                                                                                                                                                                                                                                                                                                                                                        |
-| `hypr/`    | Full Hyprland configuration (the compositor used by Omarchy).                                  | `hyprland.conf` – core compositor settings; `bindings.conf` – key‑bindings; `autostart.conf` – programs launched on start‑up; `envs.conf` – environment variables for the session; `hypridle.conf` / `hyprlock.conf` – idle and lock‑screen behaviour; `looknfeel.conf` – visual tweaks; `monitors.conf` – multi‑monitor layout; `workspaces.conf` – workspace definitions; `xdph.conf` – XDPH (display‑power‑management) settings; `scripts/` – helper scripts invoked from the Hyprland config. |
-| `zathura/` | Minimal Zathura PDF viewer configuration.                                                      | `zathurarc` – colour scheme, key bindings and default options.                                                                                                                                                                                                                                                                                                                                                                                                                                    |
-| `waybar/`  | Waybar status‑bar configuration (used together with Hyprland).                                 | `config.jsonc` – widget layout and modules; `style.css` – custom styling; `scripts/` – small utilities that feed data to Waybar (e.g., battery, network).                                                                                                                                                                                                                                                                                                                                         |
-| `sgpt/`    | Configuration for **sgpt**, the local LLM assistant that powers Omarchy’s AI‑driven shortcuts. | `config.yaml` – model, temperature and API settings; `personas/` – YAML files defining custom assistant personalities.                                                                                                                                                                                                                                                                                                                                                                            |
+| Directory | Purpose | Key Files |
+| --- | --- | --- |
+| `bash/` | Personal shell helpers and local environment setup. | `functions/` reusable shell functions |
+| `bin/` | Executable scripts used by Waybar and Hyprland modules. | `mullvad-vpn.sh`, `spotify-module.py`, `weather-module.sh`, `temperature-info-module.sh`, `volume-info-module.sh`, `omarchy-move-to.sh`, `omarchy-toggle-layout.sh`, `omarchy-sync-spotify-theme.sh`. |
+| `btop/` | btop configuration and theme files. | `btop.conf`, `themes/current.theme`. |
+| `hypr/` | Main Hyprland configuration. | `hyprland.conf`, `bindings.conf`, `autostart.conf`, `envs.conf`, `hypridle.conf`, `hyprlock.conf`, `looknfeel.conf`, `monitors.conf`, `workspaces.conf`, `xdph.conf`, `shaders/`. |
+| `waybar/` | Waybar layout and styles. | `config.jsonc`, `style.css` (modules now call scripts from `bin/`). |
+| `sgpt/` | sgpt assistant settings and personas. | `config.yaml`, `personas/`. |
+| `zathura/` | Zathura PDF viewer config. | `zathurarc`. |
 
----
-
-_This repository is intended for personal use with Omarchy 3.0. Adjust paths and settings as needed for your own environment._
-
+_This repository is intended for personal use with Omarchy 3.x.x.  Adjust paths and settings as needed for your own environment._
