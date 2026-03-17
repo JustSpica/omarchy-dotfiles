@@ -7,7 +7,7 @@
   border: none;
   border-radius: 0;
   min-height: 0;
-  font-family: 'JetBrainsMono Nerd Font';
+  font-family: "JetBrainsMono Nerd Font";
   font-size: 14px;
 }
 
@@ -31,7 +31,6 @@
 }
 
 #custom-omarchy,
-#custom-screenrecording-indicator,
 #custom-update {
   min-width: 12px;
   margin: 0 8px;
@@ -43,7 +42,8 @@
 #network,
 #custom-expand-icon,
 #custom-volume,
-#custom-nightlight {
+#custom-nightlight,
+#custom-vpn {
   margin-right: 8px;
   font-weight: bold;
 }
@@ -70,9 +70,12 @@ tooltip {
   opacity: 0;
 }
 
-#custom-screenrecording-indicator {
+#custom-screenrecording-indicator,
+#custom-idle-indicator,
+#custom-notification-silencing-indicator {
   min-width: 12px;
   margin-left: 5px;
+  margin-right: 0;
   font-size: 10px;
   padding-bottom: 1px;
 }
@@ -110,4 +113,17 @@ tooltip {
 /* Quando está 404 (O script Python define essa classe) */
 #custom-spotify.stopped {
   color: #a6adc8; /* Uma cor mais apagada/cinza para indicar inatividade */
+}
+
+#custom-idle-indicator.active,
+#custom-notification-silencing-indicator.active {
+  color: #a55555;
+}
+
+#custom-vpn.connected {
+  color: #4caf50;
+}
+
+#custom-vpn.disconnected {
+  color: #ef5350;
 }
