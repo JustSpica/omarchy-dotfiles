@@ -1,0 +1,31 @@
+#!/usr/bin/env bash
+set -u
+
+LOG_FILE="$HOME/.cache/omarchy-spicetify-sync.log"
+SYNC_SCRIPT="$HOME/.config/bin/omarchy-sync-spotify-theme.sh"
+
+mkdir -p "$HOME/.cache"
+
+{
+  printf '\n[%s] theme-set hook disparado (tema=%s)\n' "$(date '+%F %T')" "${1:-unknown}"
+
+  if [[ -x "$SYNC_SCRIPT" ]]; then
+    "$SYNC_SCRIPT" "OmarchySync"
+  elif [[ -f "$SYNC_SCRIPT" ]]; then
+    bash "$SYNC_SCRIPT" "OmarchySync"
+  else
+    printf 'Erro: script de sync nao encontrado em %s\n' "$SYNC_SCRIPT"
+    exit 0
+  fi
+
+  if command -v spicetify >/dev/null 2>&1; then
+    if ! spicetify apply; then
+      printf 'Aviso: spicetify apply falhou, tentando refresh...\n'
+      spicetify refresh || true
+    fi
+  else
+    printf 'Erro: comando spicetify nao encontrado no PATH\n'
+  fi
+} >>"$LOG_FILE" 2>&1
+
+exit 0
