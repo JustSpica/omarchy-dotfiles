@@ -1,0 +1,146 @@
+{ "workbench.colorTheme": "Monokai Pro (Filter Ristretto)",  
+  // Editor Settings
+  "editor.codeActionsOnSave": {
+    "source.fixAll.eslint": "explicit",
+  },
+  "editor.cursorBlinking": "solid",
+  "editor.cursorSmoothCaretAnimation": "on",
+  "editor.cursorWidth": 5,
+  "editor.detectIndentation": false,
+  "editor.fontLigatures": true, 
+  "editor.fontFamily": "JetBrainsMono Nerd Font, JetBrains Mono",
+  "editor.fontSize": 14,
+  "editor.largeFileOptimizations": false,
+  "editor.letterSpacing": 0.5,
+  "editor.lineHeight": 1.825,
+  "editor.minimap.enabled": false,
+  "editor.overviewRulerBorder": false,
+  "editor.quickSuggestions": {
+    "strings": true
+  },
+  "editor.renderWhitespace": "none",
+  "editor.renderLineHighlight": "gutter",
+  "editor.rulers": [
+    80,
+    120
+  ],
+  "editor.semanticHighlighting.enabled": false,
+  "editor.smoothScrolling": true,
+  "editor.tabSize": 2,
+
+  // Explorer Settings
+  "explorer.confirmDragAndDrop": false,
+  "explorer.confirmDelete": false,
+  "explorer.compactFolders": false,
+  "explorer.sortOrder": "type",
+
+  // Languages Settings
+  "javascript.suggest.autoImports": true,
+  "javascript.updateImportsOnFileMove.enabled": "always",
+  "typescript.suggest.autoImports": true,
+  "typescript.updateImportsOnFileMove.enabled": "always",
+  "tailwindCSS.classAttributes": [
+    "class",
+    "className",
+    "classNames"
+  ],
+  "tailwindCSS.experimental.classRegex": [
+    ["tv\\((([^()]*|\\([^()]*\\))*)\\)", "[\"'`]([^\"'`]*).*?[\"'`]"]
+  ],
+  
+
+  //Terminal Settings
+  "terminal.integrated.defaultProfile.windows": "Git Bash",
+  "terminal.integrated.fontFamily": "JetBrainsMono Nerd Font, monospace",
+  "terminal.integrated.fontSize": 13,
+  "terminal.integrated.smoothScrolling": true,
+
+  // VSCode Styles Settings
+  /* "apc.menubar.compact": true,
+  "apc.electron": {
+    "titleBarStyle": "hidden",
+    "frame": true,
+    "titleBarOverlay": {
+      "color": "#101010",
+      "symbolColor": "#FFF",
+      "height": 42
+    },
+  },
+  "apc.listRow": {
+    "height": 24,
+    "lists": [
+      "explorer-folders-view",
+    ]
+  },
+  "apc.font.family": "Inter",
+  "apc.stylesheet": {
+    ".editor-actions": "display: none",
+    ".nosidebar .inline-tabs-placeholder": "width: 75px",
+    ".pane-body": "padding: 8px",
+    ".pane-header": "padding: 0 8px",
+    ".split-view-view:first-child .pane-header": "display: none !important;",
+    ".monaco-list-row": "border-radius: 4px;",
+    ".monaco-workbench .monaco-list:not(.element-focused):focus:before": "display: none;",
+    ".tabs": "max-width: calc(100% - 114px);",
+    ".editor-group-container .empty": "display: block !important;"
+  }, */
+  "breadcrumbs.enabled": false,
+  "scm.diffDecorations": "none",
+  "workbench.activityBar.location": "bottom",
+  
+  "workbench.editor.editorActionsLocation": "hidden",
+  "workbench.editor.labelFormat": "short",
+  "workbench.iconTheme": "Monokai Pro (Filter Ristretto) Icons",
+  "workbench.layoutControl.enabled": false,
+  "workbench.statusBar.visible": false,
+  "workbench.productIconTheme": "fluent-icons",
+  "workbench.tree.enableStickyScroll": false,
+  "window.commandCenter": false,
+  "window.dialogStyle": "custom",
+  "window.titleBarStyle": "custom",
+  "zenMode.fullScreen": true,
+  "zenMode.centerLayout": false,
+
+  //C++ settings
+  "[c]": {
+    "editor.formatOnSave": true
+  },
+  "[cpp]": {
+    "editor.formatOnSave": true
+  },
+  "C_Cpp.clang_format_fallbackStyle": "Google",
+
+  // Other settings
+  "[prisma]": {
+    "editor.formatOnSave": true
+  },
+  "extensions.ignoreRecommendations": true,
+  "files.autoSave": "afterDelay",
+  "importCost.largePackageDarkColor": "#EC3A37F5",
+  "importCost.mediumPackageDarkColor": "#FACC15",
+  "importCost.smallPackageDarkColor": "#B362FF",
+  "symbols.hidesExplorerArrows": false,
+  "symbols.folders.associations": {
+    "type-orm": "folder-orange-code"
+  },
+  "symbols.files.associations": {
+    "*.controller.ts": "nest-controller",
+    "*.module.ts": "nest",
+    "*.service.ts": "nest-service"
+  },
+  "eslint.debug": true,
+  "git.openRepositoryInParentFolders": "always",
+  "window.zoomLevel": 1,
+  "workbench.startupEditor": "newUntitledFile",
+  "workbench.list.smoothScrolling": true,
+  "security.workspace.trust.untrustedFiles": "open",
+  "update.mode": "default",
+  "window.newWindowDimensions": "offset",
+  "debug.onTaskErrors": "debugAnyway",
+  "vscord.app.name": "Visual Studio Code",
+  "markdown-preview-enhanced.enablePreviewZenMode": true,
+  "markdown-preview-enhanced.previewTheme": "github-dark.css",
+  "chat.viewSessions.orientation": "stacked",
+  "workbench.secondarySideBar.defaultVisibility": "hidden",
+  "chat.viewSessions.enabled": false,
+}
