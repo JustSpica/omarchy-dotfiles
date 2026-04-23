@@ -2,20 +2,23 @@
 set -u
 
 LOG_FILE="$HOME/.cache/omarchy-spicetify-sync.log"
-SYNC_SCRIPT="$HOME/.config/bin/omarchy-sync-spotify-theme.sh"
+SYNC_SCRIPT="$HOME/.config/bin/omarchy-sync-spicetify.sh"
+SCHEME_NAME="${SPICETIFY_SCHEME_NAME:-OmarchySync}"
 
-mkdir -p "$HOME/.cache"
+sync_spicetify_theme() {
+  local sync_script="$SYNC_SCRIPT"
 
-{
-  printf '\n[%s] theme-set hook disparado (tema=%s)\n' "$(date '+%F %T')" "${1:-unknown}"
-
-  if [[ -x "$SYNC_SCRIPT" ]]; then
-    "$SYNC_SCRIPT" "OmarchySync"
-  elif [[ -f "$SYNC_SCRIPT" ]]; then
-    bash "$SYNC_SCRIPT" "OmarchySync"
+  if [[ -x "$sync_script" ]]; then
+    if ! "$sync_script" "$SCHEME_NAME"; then
+      printf 'Aviso: falha ao executar %s\n' "$sync_script"
+    fi
+  elif [[ -f "$sync_script" ]]; then
+    if ! bash "$sync_script" "$SCHEME_NAME"; then
+      printf 'Aviso: falha ao executar %s via bash\n' "$sync_script"
+    fi
   else
-    printf 'Erro: script de sync nao encontrado em %s\n' "$SYNC_SCRIPT"
-    exit 0
+    printf 'Erro: script de sync nao encontrado em %s (fallback: %s)\n' "$SYNC_SCRIPT"
+    return 0
   fi
 
   if command -v spicetify >/dev/null 2>&1; then
@@ -26,6 +29,13 @@ mkdir -p "$HOME/.cache"
   else
     printf 'Erro: comando spicetify nao encontrado no PATH\n'
   fi
+}
+
+mkdir -p "$HOME/.cache"
+
+{
+  printf '\n[%s] theme-set hook disparado (tema=%s)\n' "$(date '+%F %T')" "${1:-unknown}"
+  sync_spicetify_theme
 } >>"$LOG_FILE" 2>&1
 
 exit 0
