@@ -8,7 +8,7 @@ Installation targets and merge/replace rules are documented in `SCRIPT-GUIDE.md`
 
 | Directory | Purpose | Key files |
 | --- | --- | --- |
-| `bin/` | Executable scripts used by Waybar/Hyprland and Omarchy workflows. | `mullvad-vpn.sh`, `spotify-module.py`, `weather-module.sh`, `temperature-info-module.sh`, `volume-info-module.sh`, `omarchy-move-to.sh`, `omarchy-sync-spicetify.sh` |
+| `bin/` | Executable scripts used by Waybar/Hyprland and Omarchy workflows. | `mullvad-vpn.sh`, `spotify-module.py`, `weather-module.sh`, `omarchy-move-to.sh`, `omarchy-sync-spicetify.sh` |
 | `hypr/` | Main Hyprland configuration split by concern. | `hyprland.conf`, `bindings.conf`, `autostart.conf`, `envs.conf`, `input.conf`, `looknfeel.conf`, `monitors.conf`, `workspaces.conf`, `hypridle.conf`, `hyprlock.conf`, `hyprsunset.conf`, `xdph.conf` |
 | `omarchy/` | Omarchy backgrounds and hooks. | `backgrounds/`, `hooks/` |
 | `spicetify/` | Spicetify configuration and theme packs. | `config-xpui.ini`, `Themes/omarchy-sync/color.ini` |

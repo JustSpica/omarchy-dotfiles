@@ -8,66 +8,77 @@
   border-radius: 0;
   min-height: 0;
   font-family: "JetBrainsMono Nerd Font";
-  font-size: 14px;
+  font-size: 12px;
+  font-weight: 600;
 }
 
-.modules-left {
-  margin-left: 8px;
+tooltip {
+  padding: 2px;
 }
 
-.modules-right {
-  margin-right: 8px;
+.hidden {
+  opacity: 0;
 }
 
+/* WORKSPACES */
 #workspaces button {
   all: initial;
-  padding: 0 6px;
-  margin: 0 1.5px;
-  min-width: 9px;
+  padding: 0 8px;
+  border-bottom: 2px solid transparent;
+  transition: all 150ms ease;
+}
+
+#workspaces button.active {
+  border-bottom: 2px solid @foreground;
+  color: @foreground;
 }
 
 #workspaces button.empty {
   opacity: 0.5;
 }
 
-#custom-omarchy,
-#custom-update {
-  min-width: 12px;
-  margin: 0 8px;
-}
-
-#cpu,
-#tray,
+/* MODULES RIGHT */
+#custom-vpn,
+#pulseaudio,
 #bluetooth,
 #network,
-#custom-expand-icon,
-#custom-volume,
-#custom-nightlight,
-#custom-vpn {
-  margin-right: 8px;
-  font-weight: bold;
+#cpu,
+#custom-power {
+  padding: 0 12px;
+  border-left: 2px solid alpha(@foreground, 0.08);
+  letter-spacing: 1px;
 }
 
-#bluetooth,
-#network {
+#custom-vpn.connected {
+  color: #5db360;
+}
+
+#custom-vpn.disconnected {
+  color: #f76360;
+}
+
+#pulseaudio {
+  color: #fffab8;
+}
+
+#bluetooth {
   color: #4298ed;
 }
 
-tooltip {
-  padding: 2px;
-  border: 1px solid @foreground;
+#network {
+  color: #8ae3b1;
 }
+
+#custom-power {
+  color: #9c342f;
+}
+
+/* MODULES CENTER */
 
 #custom-update {
+  min-width: 12px;
+  margin: 0 8px;
   font-size: 10px;
-}
-
-#clock {
-  margin-left: 8px;
-}
-
-.hidden {
-  opacity: 0;
 }
 
 #custom-screenrecording-indicator,
@@ -80,6 +91,8 @@ tooltip {
   padding-bottom: 1px;
 }
 
+#custom-idle-indicator.active,
+#custom-notification-silencing-indicator.active,
 #custom-screenrecording-indicator.active {
   color: #a55555;
 }
@@ -96,34 +109,11 @@ tooltip {
 #custom-weather {
   margin: 0 7.5px;
   margin-left: 10px;
-  font-weight: bold;
 }
 
+/* MODULES LEFT */
 #custom-spotify {
-  margin: 0 7.5px;
-  margin-left: 10px;
-  font-weight: bold;
-}
-
-/* Quando está tocando (O script Python define essa classe) */
-#custom-spotify.playing {
-  color: @foreground;
-}
-
-/* Quando está 404 (O script Python define essa classe) */
-#custom-spotify.stopped {
-  color: #a6adc8; /* Uma cor mais apagada/cinza para indicar inatividade */
-}
-
-#custom-idle-indicator.active,
-#custom-notification-silencing-indicator.active {
-  color: #a55555;
-}
-
-#custom-vpn.connected {
-  color: #4caf50;
-}
-
-#custom-vpn.disconnected {
-  color: #ef5350;
+  padding: 0 12px;
+  border-left: 2px solid alpha(@foreground, 0.08);
+  letter-spacing: 1px;
 }
