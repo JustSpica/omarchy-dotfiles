@@ -18,6 +18,7 @@
     "bluetooth",
     "network",
     "cpu",
+    "battery",
     "custom/power"
   ],
   /* === modules-left === */
@@ -25,7 +26,6 @@
     "on-click": "activate",
     "format": "{icon}",
     "format-icons": {
-      "default": "",
       "1": "1",
       "2": "2",
       "3": "3",
@@ -36,7 +36,8 @@
       "8": "8",
       "9": "9",
       "10": "0",
-      "active": "󱓻"
+      "active": "󱓻",
+      "default": ""
     },
     "persistent-workspaces": {
       "1": [],
@@ -111,8 +112,8 @@
   },
   "pulseaudio": {
     "format-icons": ["", "", " "],
-    "format": "{icon} VOL {volume}%",
-    "format-muted": "  VOL muted",
+    "format": "{icon} {volume}%",
+    "format-muted": "  muted",
     "interval": 1,
     "on-click": "omarchy-launch-audio",
     "on-click-right": "pamixer -t",
