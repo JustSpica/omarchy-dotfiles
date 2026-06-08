@@ -24,8 +24,7 @@ Abaixo está os locais de instalação das pastas e a ordem de prevalencia.
 | `bin/` | `~/.config/bin/` | Substituir a pasta | Este repositorio |
 | `hypr/` | `~/.config/hypr/` | Mesclar a pasta | Este repositorio |
 | `omarchy/backgrounds` | `~/Pictures/backgrounds` | Mesclar a pasta | Este repositorio |
-| `omarchy/hooks` | `~/.config/omarchy/` | Mesclar a pasta | Este repositorio |
-| `spicetify/` | `~/.config/spicetify/` | Substituir a pasta | Este repositorio |
+| `omarchy/themes` | `~/.config/omarchy/` | Substituir a pasta| Este repositorio |
 | `waybar/` | `~/.config/waybar/` | Substituir a pasta | Este repositorio |
 
 ## Itens com destino especifico

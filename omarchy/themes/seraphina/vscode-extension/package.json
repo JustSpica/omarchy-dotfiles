@@ -1,0 +1,20 @@
+{
+    "name": "theme-seraphina",
+    "displayName": "Seraphina Theme",
+    "description": "Seraphina color theme generated from wallpaper",
+    "publisher": "local",
+    "version": "1.0.0",
+    "engines": {
+        "vscode": "^1.70.0"
+    },
+    "categories": ["Themes"],
+    "contributes": {
+        "themes": [
+            {
+                "label": "Seraphina",
+                "uiTheme": "vs-dark",
+                "path": "./themes/seraphina-color-theme.json"
+            }
+        ]
+    }
+}

@@ -13,8 +13,8 @@ Uso: ./install.sh [opcoes]
 Instala os arquivos deste repositorio seguindo o SCRIPT-GUIDE.md.
 
 Regras aplicadas:
-  - Substituir: bin, spicetify, waybar, vscode/settings.json
-  - Mesclar: hypr, omarchy/backgrounds, omarchy/hooks
+  - Substituir: bin, omarchy/themes, waybar, vscode/settings.json
+  - Mesclar: hypr, omarchy/backgrounds
 
 Opcoes:
   --config-dir <caminho>          Base para destinos em ~/.config
@@ -224,8 +224,7 @@ log "Destino Pictures: $PICTURES_DIR"
 replace_dir "$SCRIPT_DIR/bin" "$CONFIG_DIR/bin"
 merge_dir "$SCRIPT_DIR/hypr" "$CONFIG_DIR/hypr"
 merge_dir "$SCRIPT_DIR/omarchy/backgrounds" "$PICTURES_DIR/backgrounds"
-merge_dir "$SCRIPT_DIR/omarchy/hooks" "$CONFIG_DIR/omarchy/hooks"
-replace_dir "$SCRIPT_DIR/spicetify" "$CONFIG_DIR/spicetify"
+replace_dir "$SCRIPT_DIR/omarchy/themes" "$CONFIG_DIR/omarchy/themes"
 replace_dir "$SCRIPT_DIR/waybar" "$CONFIG_DIR/waybar"
 replace_file "$SCRIPT_DIR/vscode/settings.json" "$CONFIG_DIR/Code/User/settings.json"
 
