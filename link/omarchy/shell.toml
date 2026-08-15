@@ -1,0 +1,13 @@
+# Overrides de estilo do shell.
+#
+# Esta camada vence a do tema e sobrevive a trocas de tema — uma troca
+# substitui apenas ~/.local/state/omarchy/current/theme/shell.toml.
+# O arquivo é observado: salvar aplica na hora, sem reiniciar o shell.
+#
+# Catálogo completo das chaves disponíveis, já comentado:
+#   less ~/.local/state/omarchy/current/theme/shell.toml
+
+[bar]
+# Altura da barra quando ela está no topo ou na base, em px na base-size 12
+# da fonte. Equivale ao antigo `"height": 32` do waybar. O padrão é 26.
+size-horizontal = 32
