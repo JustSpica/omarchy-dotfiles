@@ -1,1 +1,13 @@
-bash/secrets
+# Segredos e credenciais
+secrets
+*.secret
+*.key
+*.pem
+
+# Backups gerados pelo install.sh
+.dotfiles-backup/
+
+# Ruído do sistema de arquivos
+*.swp
+*~
+.DS_Store

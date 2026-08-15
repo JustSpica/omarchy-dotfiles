@@ -1,237 +1,127 @@
 #!/usr/bin/env bash
-set -euo pipefail
+# Instala as customizações deste repositório sobre um Omarchy Quattro limpo.
+#
+#   ./install.sh                    enlaça os arquivos e aplica os ajustes
+#   ./install.sh --dry-run          mostra o que faria, sem tocar em nada
+#   ./install.sh --check            só relata o estado atual
+#   ./install.sh --vscode-extensions  instala também as extensões do VS Code
 
-SCRIPT_DIR="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd -P)"
-CONFIG_DIR="${OMARCHY_INSTALL_CONFIG_DIR:-$HOME/.config}"
-PICTURES_DIR="${OMARCHY_INSTALL_PICTURES_DIR:-$HOME/Pictures}"
-INSTALL_VSCODE_EXTENSIONS="${OMARCHY_INSTALL_VSCODE_EXTENSIONS:-0}"
+REPO_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+source "$REPO_ROOT/lib/common.sh"
+
+WITH_VSCODE_EXTENSIONS=0
+CHECK_ONLY=0
 
 usage() {
-  cat <<'EOF'
-Uso: ./install.sh [opcoes]
-
-Instala os arquivos deste repositorio seguindo o SCRIPT-GUIDE.md.
-
-Regras aplicadas:
-  - Substituir: bin, omarchy/themes, waybar, vscode/settings.json
-  - Mesclar: hypr, omarchy/backgrounds
-
-Opcoes:
-  --config-dir <caminho>          Base para destinos em ~/.config
-  --pictures-dir <caminho>        Base para o destino ~/Pictures
-  --install-vscode-extensions     Instala extensoes de vscode/extensions.txt
-  -h, --help                      Mostra esta ajuda
-
-Variaveis de ambiente equivalentes:
-  OMARCHY_INSTALL_CONFIG_DIR
-  OMARCHY_INSTALL_PICTURES_DIR
-  OMARCHY_INSTALL_VSCODE_EXTENSIONS=1
-EOF
+  sed -n '2,8p' "$0" | sed 's/^# \?//'
+  exit "${1:-0}"
 }
 
-log() {
-  printf '[install] %s\n' "$*"
-}
-
-fail() {
-  printf '[erro] %s\n' "$*" >&2
-  exit 1
-}
-
-require_dir() {
-  local path="$1"
-
-  [[ -d "$path" ]] || fail "pasta obrigatoria ausente: $path"
-}
-
-require_file() {
-  local path="$1"
-
-  [[ -f "$path" ]] || fail "arquivo obrigatorio ausente: $path"
-}
-
-normalize_path() {
-  realpath -m "$1"
-}
-
-assert_copy_target() {
-  local src="$1"
-  local dest="$2"
-  local normalized_src
-  local normalized_dest
-
-  normalized_src="$(normalize_path "$src")"
-  normalized_dest="$(normalize_path "$dest")"
-
-  if [[ "$normalized_dest" == "$normalized_src" || "$normalized_dest" == "$normalized_src"/* ]]; then
-    fail "destino nao pode ser igual ou interno a origem: $dest"
-  fi
-}
-
-assert_safe_remove() {
-  local path="$1"
-  local normalized_path
-
-  normalized_path="$(normalize_path "$path")"
-
-  case "$normalized_path" in
-    ''|'/')
-      fail "recusando remover caminho perigoso: $path"
-      ;;
+while (($#)); do
+  case $1 in
+  --dry-run) DRY_RUN=1 ;;
+  --check) CHECK_ONLY=1; DRY_RUN=1 ;;
+  --vscode-extensions) WITH_VSCODE_EXTENSIONS=1 ;;
+  -h | --help) usage 0 ;;
+  *) err "opção desconhecida: $1"; usage 1 ;;
   esac
-
-  if [[ "$normalized_path" == "$HOME" || "$normalized_path" == "$CONFIG_DIR" || "$normalized_path" == "$PICTURES_DIR" ]]; then
-    fail "recusando remover diretorio base: $path"
-  fi
-}
-
-remove_path() {
-  local path="$1"
-
-  assert_safe_remove "$path"
-
-  if [[ -e "$path" || -L "$path" ]]; then
-    rm -rf -- "$path"
-  fi
-}
-
-replace_dir() {
-  local src="$1"
-  local dest="$2"
-
-  require_dir "$src"
-  assert_copy_target "$src" "$dest"
-
-  log "Substituir pasta: $dest"
-  remove_path "$dest"
-  mkdir -p -- "${dest%/*}"
-  cp -a -- "$src" "$dest"
-}
-
-merge_dir_contents() {
-  local src="$1"
-  local dest="$2"
-  local item
-  local name
-  local target
-
-  mkdir -p -- "$dest"
-
-  shopt -s dotglob nullglob
-  for item in "$src"/*; do
-    name="${item##*/}"
-    target="$dest/$name"
-
-    if [[ -d "$item" && ! -L "$item" ]]; then
-      if [[ -e "$target" || -L "$target" ]]; then
-        if [[ ! -d "$target" || -L "$target" ]]; then
-          remove_path "$target"
-          mkdir -p -- "$target"
-        fi
-      else
-        mkdir -p -- "$target"
-      fi
-
-      merge_dir_contents "$item" "$target"
-    else
-      remove_path "$target"
-      cp -a -- "$item" "$target"
-    fi
-  done
-  shopt -u dotglob nullglob
-}
-
-merge_dir() {
-  local src="$1"
-  local dest="$2"
-
-  require_dir "$src"
-  assert_copy_target "$src" "$dest"
-
-  log "Mesclar pasta: $dest (prioridade repositorio)"
-  merge_dir_contents "$src" "$dest"
-}
-
-replace_file() {
-  local src="$1"
-  local dest="$2"
-
-  require_file "$src"
-  assert_copy_target "$src" "$dest"
-
-  log "Substituir arquivo: $dest"
-  mkdir -p -- "${dest%/*}"
-  remove_path "$dest"
-  cp -a -- "$src" "$dest"
-}
-
-install_vscode_extensions() {
-  local file="$SCRIPT_DIR/vscode/extensions.txt"
-  local extension
-
-  require_file "$file"
-
-  if ! command -v code >/dev/null 2>&1; then
-    fail "comando code nao encontrado no PATH"
-  fi
-
-  log 'Instalando extensoes do VS Code...'
-  while IFS= read -r extension || [[ -n "$extension" ]]; do
-    [[ -z "$extension" || "$extension" =~ ^[[:space:]]*# ]] && continue
-    code --install-extension "$extension"
-  done <"$file"
-}
-
-while [[ $# -gt 0 ]]; do
-  case "$1" in
-    --config-dir)
-      [[ $# -ge 2 ]] || fail '--config-dir exige um argumento'
-      CONFIG_DIR="$2"
-      shift 2
-      ;;
-    --pictures-dir)
-      [[ $# -ge 2 ]] || fail '--pictures-dir exige um argumento'
-      PICTURES_DIR="$2"
-      shift 2
-      ;;
-    --install-vscode-extensions)
-      INSTALL_VSCODE_EXTENSIONS=1
-      shift
-      ;;
-    -h|--help)
-      usage
-      exit 0
-      ;;
-    *)
-      usage
-      fail "opcao desconhecida: $1"
-      ;;
-  esac
+  shift
 done
 
-case "$INSTALL_VSCODE_EXTENSIONS" in
-  0|1) ;;
-  *) fail 'OMARCHY_INSTALL_VSCODE_EXTENSIONS deve ser 0 ou 1' ;;
-esac
+# --- verificações -----------------------------------------------------------
 
-CONFIG_DIR="$(normalize_path "$CONFIG_DIR")"
-PICTURES_DIR="$(normalize_path "$PICTURES_DIR")"
+section "Ambiente"
 
-log "Repositorio: $SCRIPT_DIR"
-log "Destino .config: $CONFIG_DIR"
-log "Destino Pictures: $PICTURES_DIR"
-
-replace_dir "$SCRIPT_DIR/bin" "$CONFIG_DIR/bin"
-merge_dir "$SCRIPT_DIR/hypr" "$CONFIG_DIR/hypr"
-merge_dir "$SCRIPT_DIR/omarchy/backgrounds" "$PICTURES_DIR/backgrounds"
-replace_dir "$SCRIPT_DIR/omarchy/themes" "$CONFIG_DIR/omarchy/themes"
-replace_dir "$SCRIPT_DIR/waybar" "$CONFIG_DIR/waybar"
-replace_file "$SCRIPT_DIR/vscode/settings.json" "$CONFIG_DIR/Code/User/settings.json"
-
-if [[ "$INSTALL_VSCODE_EXTENSIONS" -eq 1 ]]; then
-  install_vscode_extensions
+if command -v omarchy >/dev/null; then
+  ok "Omarchy $(omarchy version 2>/dev/null || echo '?')"
 else
-  log 'Extensoes do VS Code nao instaladas (use --install-vscode-extensions).'
+  warn "comando omarchy não encontrado — os ajustes do Omarchy serão pulados"
 fi
 
-log 'Instalacao concluida com sucesso.'
+((DRY_RUN)) && warn "modo dry-run: nenhuma alteração será gravada"
+
+# --- estado atual -----------------------------------------------------------
+
+if ((CHECK_ONLY)); then
+  section "Symlinks"
+  while IFS= read -r rel; do
+    dst="$CONFIG_HOME/$rel"
+    src="$REPO_ROOT/link/$rel"
+    if [[ ! -e $dst ]]; then
+      warn "$rel (ausente)"
+    elif [[ -L $dst && "$(readlink -f "$dst")" == "$(readlink -f "$src")" ]]; then
+      ok "$rel"
+    elif [[ -L $dst ]]; then
+      err "$rel (aponta para outro lugar: $(readlink "$dst"))"
+    else
+      err "$rel (arquivo comum — o symlink foi substituído)"
+    fi
+  done < <(cd "$REPO_ROOT/link" && find . -type f | sed 's|^\./||' | sort)
+
+  section "Ajustes"
+  "$REPO_ROOT/tweaks.sh"
+  exit 0
+fi
+
+# --- symlinks ---------------------------------------------------------------
+
+section "Symlinks"
+
+while IFS= read -r rel; do
+  link_file "$rel"
+done < <(cd "$REPO_ROOT/link" && find . -type f | sed 's|^\./||' | sort)
+
+# --- ajustes em arquivos do Omarchy ----------------------------------------
+
+DRY_RUN=$DRY_RUN "$REPO_ROOT/tweaks.sh"
+
+# --- VS Code ----------------------------------------------------------------
+
+section "VS Code"
+
+vscode_user="$CONFIG_HOME/Code/User"
+if [[ -d $(dirname "$vscode_user") ]]; then
+  if [[ -f "$vscode_user/settings.json" ]] &&
+    cmp -s "$REPO_ROOT/vscode/settings.json" "$vscode_user/settings.json"; then
+    skip "settings.json (já sincronizado)"
+  else
+    backup "$vscode_user/settings.json"
+    run mkdir -p "$vscode_user"
+    run cp "$REPO_ROOT/vscode/settings.json" "$vscode_user/settings.json"
+    ok "settings.json"
+  fi
+else
+  skip "VS Code não instalado"
+fi
+
+if ((WITH_VSCODE_EXTENSIONS)); then
+  if command -v code >/dev/null; then
+    installed=$(code --list-extensions 2>/dev/null | tr '[:upper:]' '[:lower:]' | sort)
+    while IFS= read -r ext; do
+      [[ -n $ext ]] || continue
+      # local.* são extensões geradas na máquina (o omarchy-theme-set-vscode
+      # cria local.omarchy-theme). Não existem no marketplace.
+      [[ $ext == local.* ]] && continue
+      if grep -qxF "${ext,,}" <<<"$installed"; then
+        skip "$ext"
+      else
+        run code --install-extension "$ext" --force >/dev/null && ok "$ext"
+      fi
+    done <"$REPO_ROOT/vscode/extensions.txt"
+  else
+    warn "comando 'code' não encontrado"
+  fi
+else
+  skip "extensões (use --vscode-extensions)"
+fi
+
+# --- final ------------------------------------------------------------------
+
+section "Pronto"
+
+if ((DRY_RUN)); then
+  ok "nada foi alterado (dry-run)"
+else
+  [[ -d $BACKUP_DIR ]] && warn "backups em ${BACKUP_DIR/#$HOME/\~}"
+  ok "recarregue o Hyprland com: hyprctl reload"
+fi
