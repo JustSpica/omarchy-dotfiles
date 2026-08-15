@@ -1,8 +1,12 @@
-{ "workbench.colorTheme": "Frieren Light",
+{ "workbench.colorTheme": "Omarchy",  
   // Editor Settings
   "editor.codeActionsOnSave": {
-    "source.fixAll.eslint": "explicit"
+    "source.fixAll": "explicit",
   },
+  "editor.defaultFormatter": "oxc.oxc-vscode",
+  "editor.formatOnSave": true,
+  "editor.formatOnSaveMode": "file",
+
   "editor.cursorBlinking": "solid",
   "editor.cursorSmoothCaretAnimation": "on",
   "editor.cursorWidth": 5,
@@ -56,34 +60,6 @@
   "terminal.integrated.smoothScrolling": true,
 
   // VSCode Styles Settings
-  /* "apc.menubar.compact": true,
-  "apc.electron": {
-    "titleBarStyle": "hidden",
-    "frame": true,
-    "titleBarOverlay": {
-      "color": "#101010",
-      "symbolColor": "#FFF",
-      "height": 42
-    },
-  },
-  "apc.listRow": {
-    "height": 24,
-    "lists": [
-      "explorer-folders-view",
-    ]
-  },
-  "apc.font.family": "Inter",
-  "apc.stylesheet": {
-    ".editor-actions": "display: none",
-    ".nosidebar .inline-tabs-placeholder": "width: 75px",
-    ".pane-body": "padding: 8px",
-    ".pane-header": "padding: 0 8px",
-    ".split-view-view:first-child .pane-header": "display: none !important;",
-    ".monaco-list-row": "border-radius: 4px;",
-    ".monaco-workbench .monaco-list:not(.element-focused):focus:before": "display: none;",
-    ".tabs": "max-width: calc(100% - 114px);",
-    ".editor-group-container .empty": "display: block !important;"
-  }, */
   "breadcrumbs.enabled": false,
   "scm.diffDecorations": "none",
   "workbench.activityBar.location": "bottom",
@@ -116,9 +92,6 @@
   },
   "extensions.ignoreRecommendations": true,
   "files.autoSave": "afterDelay",
-  "importCost.largePackageDarkColor": "#EC3A37F5",
-  "importCost.mediumPackageDarkColor": "#FACC15",
-  "importCost.smallPackageDarkColor": "#B362FF",
   "symbols.hidesExplorerArrows": false,
   "symbols.folders.associations": {
     "type-orm": "folder-orange-code"
@@ -137,10 +110,9 @@
   "update.mode": "default",
   "window.newWindowDimensions": "offset",
   "debug.onTaskErrors": "debugAnyway",
-  "vscord.app.name": "Visual Studio Code",
   "markdown-preview-enhanced.enablePreviewZenMode": true,
   "markdown-preview-enhanced.previewTheme": "github-dark.css",
   "chat.viewSessions.orientation": "stacked",
   "workbench.secondarySideBar.defaultVisibility": "hidden",
-  "chat.viewSessions.enabled": false
+  "chat.viewSessions.enabled": false,
 }

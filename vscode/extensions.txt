@@ -1,6 +1,5 @@
 adpyke.codesnap
 aykutsarac.jsoncrack-vscode
-bjarne.vantablack-omarchy
 bradlc.vscode-tailwindcss
 catppuccin.catppuccin-vsc
 csstools.postcss
@@ -8,8 +7,8 @@ dbaeumer.vscode-eslint
 eamodio.gitlens
 enkia.tokyo-night
 esbenp.prettier-vscode
+farigab.noctokai-theme
 fuzionix.file-tree-extractor
-ganevru.in-the-fog-theme
 hiukky.flate
 humao.rest-client
 jdinhlife.gruvbox
@@ -21,10 +20,9 @@ ms-vscode.cpp-devtools
 ms-vscode.cpptools
 ms-vscode.cpptools-extension-pack
 ms-vscode.cpptools-themes
+mvllow.rose-pine
 mylesmurphy.prettify-ts
 naumovs.color-highlight
+oxc.oxc-vscode
 prisma.prisma
-qufiwefefwoyn.kanagawa
-shadesofbuntu.flexoki-light
 shd101wyy.markdown-preview-enhanced
-tahayvr.matteblack
