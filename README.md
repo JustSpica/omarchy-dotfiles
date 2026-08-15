@@ -16,6 +16,7 @@ git clone git@github.com:JustSpica/omarchy-dotfiles.git ~/omarchy-dotfiles
 cd ~/omarchy-dotfiles
 ./install.sh
 hyprctl reload
+omarchy restart shell
 ```
 
 | Comando | O que faz |
@@ -28,6 +29,17 @@ hyprctl reload
 O script é idempotente: rodar de novo não duplica nada e informa o que já está
 aplicado. Antes de substituir qualquer arquivo existente, guarda uma cópia em
 `~/.config/.dotfiles-backup/<timestamp>/`.
+
+## Estrutura
+
+```
+install.sh              orquestra tudo
+tweaks.sh               ajustes idempotentes em arquivos do Omarchy
+lib/common.sh           helpers de log, backup, symlink e substituição de linha
+link/                   espelha ~/.config — vira symlink
+vscode/                 settings.json + lista de extensões (copiados)
+waybar-*.old.*          config e style da waybar pré-Quattro, só para consulta
+```
 
 ## Como as customizações são aplicadas
 
@@ -42,21 +54,35 @@ o repo, bastando commitar.
 | Arquivo | O que é |
 | --- | --- |
 | `hypr/workspaces.lua` | Distribuição de workspaces: ímpares no `DP-3`, pares no `HDMI-A-1` |
-| `hypr/looknfeel.lua` | `gaps_in`/`gaps_out` 6 e `rounding` 6 |
+| `hypr/input.lua` | `kb_layout = "br"` e `sensitivity = -0.75` |
+| `hypr/looknfeel.lua` | Gaps 6, `rounding` 6 com `rounding_power` 3, opacidades 1.0/0.9, e as animações `workspaces` e `fadeSwitch` |
 | `hypr/monitors.lua` | Layout dos monitores (gerado pelo nwg-displays) |
 | `bin/mullvad-vpn.sh` | Script auxiliar do Mullvad |
-| `omarchy/shell.json` | Layout da barra |
-| `omarchy/plugins/spica.*/` | Plugins clonados do shell (lock, workspaces) |
-| `omarchy/themes/nico-robin/` | Tema próprio: `colors.toml`, `icons.theme`, wallpapers |
+| `omarchy/shell.json` | Layout da barra: quais widgets, em que seção |
+| `omarchy/shell.toml` | Estilo do shell: altura da barra em 32px |
+| `omarchy/plugins/spica.lock/` | Lockscreen clonada, com o layout traduzido do antigo `hyprlock.conf` |
+| `omarchy/plugins/spica.workspaces/` | Widget de workspaces clonado, exibindo os 10 |
+| `omarchy/themes/nico-robin/` | Tema próprio: `colors.toml`, `icons.theme`, `preview.png`, wallpapers |
 
-Um tema no Quattro é essencialmente o `colors.toml`. A partir dele o
+Três observações sobre por que esses arquivos ficam aqui e não no `tweaks.sh`:
+
+O **`looknfeel.lua`** carrega depois dos overrides do tema, então fixa a
+aparência independente do tema em uso. Sem ele, o `rounding` vinha do tema
+`solitude` — o único de fábrica que mexe nisso — e voltava a zero em qualquer
+outro. As duas animações precisam ser religadas explicitamente porque o default
+do Omarchy desliga ambas.
+
+Os **plugins clonados** existem porque o valor não é configurável: o
+`Workspaces.qml` de fábrica fixa `[1,2,3,4,5]` em código, e a lockscreen só
+expõe 6 cores. Clonar é o caminho suportado — `omarchy plugin clone <id>` copia
+o diretório para `~/.config/omarchy/plugins/<usuário>.<id>/` e a cópia sobrevive
+a updates. O id fica fixo no `manifest.json`, então funciona em qualquer máquina.
+
+Um **tema** no Quattro é essencialmente o `colors.toml`. A partir dele o
 `omarchy-theme-set-templates` gera ~17 arquivos por aplicativo (alacritty, foot,
-kitty, btop, neovim, hyprland, obsidian…) em `~/.local/state/omarchy/current/theme/`.
-Guardar arquivos por aplicativo dentro do tema é formato pré-Quattro e não tem efeito.
-
-O `looknfeel.lua` carrega depois dos overrides do tema, então fixa a aparência
-independente do tema em uso. Sem ele, o `rounding` vinha do tema `solitude` — o
-único de fábrica que mexe nisso — e voltava a zero em qualquer outro.
+kitty, btop, neovim, hyprland, obsidian…) em
+`~/.local/state/omarchy/current/theme/`. Guardar arquivos por aplicativo dentro
+do tema é formato pré-Quattro e não tem efeito.
 
 ### `tweaks.sh` — ajustes em arquivos do Omarchy
 
@@ -82,7 +108,7 @@ Para mudar um valor, edite a constante no topo do `tweaks.sh` e rode
 
 `settings.json` é **copiado** (o VS Code reescreve o arquivo ao mexer nas
 preferências pela interface, o que quebraria um symlink). `extensions.txt` é a
-lista de extensões, instalada sob demanda.
+lista de extensões, instalada sob demanda com `--vscode-extensions`.
 
 Para atualizar o repo depois de mexer nas configurações do VS Code:
 
@@ -97,30 +123,56 @@ marketplace. O `install.sh` também as ignora ao instalar.
 
 ## O que deliberadamente não está aqui
 
-Foram avaliados e ficaram de fora por já serem idênticos ao padrão do Quattro,
-ou por serem estado de runtime:
+Foram avaliados e ficaram de fora por serem cópias de defaults antigos ou estado
+de runtime:
 
-- `omarchy/shell.json` — semanticamente idêntico ao default (só a ordem das chaves difere)
-- `tmux/tmux.conf` e `kitty/kitty.conf` — cópias de defaults antigos, sem ajuste próprio
+- `tmux/tmux.conf` e `kitty/kitty.conf` — divergem do padrão atual, mas apenas
+  porque são versões anteriores dele, sem ajuste próprio. O `tmux.conf` local é
+  o default de antes das descrições `-N`, e por isso não tem o atalho `?` que
+  abre o popup de keybindings.
 - `chromium/Default/Preferences` — estado do navegador, não configuração
-- Temas customizados — os antigos (`frieren-light`, `seraphina`) seguiam o formato
-  pré-Quattro, em que cada aplicativo tinha seu arquivo. No Quattro quase tudo é
-  gerado a partir do `colors.toml`.
+- Temas antigos (`frieren-light`, `seraphina`) — seguiam o formato pré-Quattro,
+  em que cada aplicativo tinha seu arquivo
 
 Se um desses divergir de verdade no futuro, o caminho é adicioná-lo ao
 `tweaks.sh` como ajuste pontual — não copiar o arquivo inteiro para `link/`.
 
 ## Manutenção
 
-Depois de um `omarchy update`, vale conferir se algum ajuste foi sobrescrito:
+### Depois de um `omarchy update`
 
 ```bash
 ./install.sh --check     # relata
 ./install.sh             # reaplica
 ```
 
-Para descobrir se surgiu alguma customização nova ainda não versionada, compare
-sua `~/.config` com os defaults que o pacote distribui:
+### Symlinks podem ser substituídos
+
+Alguns arquivos do `link/` são reescritos por programas que gravam de forma
+atômica (arquivo temporário + rename). Quando isso acontece, o symlink vira
+arquivo comum e o repositório para de receber as mudanças:
+
+| Arquivo | Quem reescreve |
+| --- | --- |
+| `omarchy/shell.json` | `omarchy bar move/put/set` |
+| `omarchy/shell.toml` | `omarchy display text size` |
+| `hypr/monitors.lua` | nwg-displays |
+
+O `./install.sh --check` reporta esses casos como `arquivo comum — o symlink foi
+substituído`; um `./install.sh` restabelece.
+
+### Reiniciar o shell depois de criar symlinks novos
+
+Plugins do tipo `service` são instanciados na inicialização do shell e não são
+trocados a quente. Além disso, o watcher do Quickshell perde o arquivo quando um
+arquivo comum é substituído por symlink. Depois de um `./install.sh` que criou
+links novos sob `omarchy/plugins/`, rode:
+
+```bash
+omarchy restart shell
+```
+
+### Procurar customizações ainda não versionadas
 
 ```bash
 cd /usr/share/omarchy/config
@@ -129,6 +181,8 @@ find . -type f | sed 's|^\./||' | while read -r f; do
 done
 ```
 
-Atenção ao resultado: nem toda diferença é customização. Verifique se o arquivo
-não é apenas um default antigo que ficou para trás — foi o caso do `tmux.conf`
-e do `kitty.conf` aqui.
+Duas ressalvas. Nem toda diferença é customização — verifique se o arquivo não é
+apenas um default antigo que ficou para trás, como aconteceu com o `tmux.conf` e
+o `kitty.conf`. E a comparação só cobre arquivos que o pacote distribui: coisas
+como `hypr/workspaces.lua`, `xdg-terminals.list` e `omarchy/shell.toml` não têm
+contraparte no default e nunca aparecem nessa lista.
