@@ -57,7 +57,6 @@ o repo, bastando commitar.
 | `hypr/input.lua` | `kb_layout = "br"` e `sensitivity = -0.75` |
 | `hypr/looknfeel.lua` | Gaps 6, `rounding` 6 com `rounding_power` 3, opacidades 1.0/0.9, e as animações `workspaces` e `fadeSwitch` |
 | `hypr/monitors.lua` | Layout dos monitores (gerado pelo nwg-displays) |
-| `bin/mullvad-vpn.sh` | Script auxiliar do Mullvad |
 | `omarchy/shell.json` | Layout da barra: quais widgets, em que seção |
 | `omarchy/shell.toml` | Estilo do shell: altura da barra em 32px |
 | `omarchy/plugins/spica.lock/` | Lockscreen clonada, com o layout traduzido do antigo `hyprlock.conf` |
