@@ -59,7 +59,9 @@ if ((CHECK_ONLY)); then
   done < <(cd "$REPO_ROOT/link" && find . -type f | sed 's|^\./||' | sort)
 
   section "Ajustes"
-  "$REPO_ROOT/tweaks.sh"
+  # DRY_RUN é variável de shell, não exportada: sem o prefixo aqui o
+  # tweaks.sh a lê como 0 e aplica de verdade, apesar do --check.
+  DRY_RUN=1 "$REPO_ROOT/tweaks.sh"
   exit 0
 fi
 
