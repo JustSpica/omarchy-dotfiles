@@ -20,9 +20,22 @@ section "Hyprland"
 
 # Registra o workspaces.lua no loader. O hyprland.lua é do Omarchy; só
 # acrescentamos a linha do require, logo após o require dos monitores.
+#
+# O require acompanha a existência do arquivo. Em máquinas de um monitor só, o
+# workspaces.lua não é enlaçado, e um require sem arquivo derruba o
+# carregamento inteiro da config do Hyprland — não só a linha. Por isso, quando
+# o arquivo não existe, a linha é removida em vez de acrescentada.
 hyprland_lua="$CONFIG_HOME/hypr/hyprland.lua"
+workspaces_lua="$CONFIG_HOME/hypr/workspaces.lua"
 if [[ ! -f $hyprland_lua ]]; then
   warn "hyprland.lua ausente"
+elif [[ ! -e $workspaces_lua ]]; then
+  if grep -q 'require("hypr.workspaces")' "$hyprland_lua"; then
+    run sed -i '/require("hypr.workspaces")/d' "$hyprland_lua"
+    ok "require hypr.workspaces removido (sem workspaces.lua nesta máquina)"
+  else
+    skip "require hypr.workspaces (sem workspaces.lua nesta máquina)"
+  fi
 elif grep -q 'require("hypr.workspaces")' "$hyprland_lua"; then
   skip "require hypr.workspaces (já aplicado)"
 elif ! grep -q 'require("hypr.monitors")' "$hyprland_lua"; then
