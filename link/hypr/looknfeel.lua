@@ -7,12 +7,12 @@
 
 hl.config({
   general = {
-    gaps_in = 6,
-    gaps_out = 6,
+    gaps_in = 2,
+    gaps_out = 2,
   },
 
   decoration = {
-    rounding = 6,
+    rounding = 0,
     rounding_power = 3,
 
     -- Janela focada opaca, as demais levemente translúcidas.
@@ -30,3 +30,8 @@ hl.animation({ leaf = "workspaces", enabled = true, speed = 4, bezier = "easeOut
 -- O default do Omarchy desliga este leaf, o que deixa o corte 1.0 -> 0.9 seco.
 -- speed é medido em decisegundos: 3 ≈ 300ms.
 hl.animation({ leaf = "fadeSwitch", enabled = true, speed = 3, bezier = "easeOutQuint" })
+
+-- Opt another application in to Omarchy's standard transparency.
+-- Find its class with: hyprctl clients
+-- o.transparent_window("my-app")
+-- o.transparent_window("my-app", "0.9 0.85") -- Custom active/inactive opacity.
