@@ -13,6 +13,9 @@
           "verticalFormat": "HH\n—\nmm"
         },
         {
+          "id": "omarchy.elsewhen"
+        },
+        {
           "id": "omarchy.keyboard-layout"
         },
         {
@@ -38,7 +41,7 @@
           "id": "omarchy.bluetooth"
         },
         {
-          "id": "spica.omaguard"
+          "id": "io.github.justspica.omaguard"
         },
         {
           "id": "omarchy.network"
